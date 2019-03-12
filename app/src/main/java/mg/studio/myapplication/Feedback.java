@@ -2,6 +2,7 @@ package mg.studio.myapplication;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.content.SharedPreferences;
 
 /**
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,

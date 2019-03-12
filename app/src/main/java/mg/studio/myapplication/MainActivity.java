@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.TextView;
+import android.content.SharedPreferences;
 
 public class MainActivity extends AppCompatActivity {
     private TextView tvName;

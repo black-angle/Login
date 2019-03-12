@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -46,6 +47,9 @@ public class Register extends AppCompatActivity {
     private SessionManager session;
     private ProgressDialog pDialog;
     private String name;
+    private String email;
+    private String password;
+
     Feedback feedback;
 
     @Override
@@ -78,8 +82,8 @@ public class Register extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
                 name = inputFullName.getText().toString().trim();
-                String email = inputEmail.getText().toString().trim();
-                String password = inputPassword.getText().toString().trim();
+                email = inputEmail.getText().toString().trim();
+                password = inputPassword.getText().toString().trim();
 
                 if (!name.isEmpty() && !email.isEmpty() && !password.isEmpty()) {
                     // Avoid repeated clicks by disabling the button
@@ -126,19 +130,38 @@ public class Register extends AppCompatActivity {
 
     }
 
+    //Toast.makeText(RegisterActivity.this, "注册成功", Toast.LENGTH_SHORT).show();
+    //把账号、密码和账号标识保存到sp里面
+    /**
+     * 保存账号和密码到SharedPreferences中
+     */
+    /*saveRegisterInfo(userName, psw);
+    //注册成功后把账号传递到LoginActivity.java中
+    // 返回值到loginActivity显示
+    Intent data = new Intent();
+                    data.putExtra("userName", userName);
+    setResult(RESULT_OK, data);
+    //RESULT_OK为Activity系统常量，状态码为-1，
+    // 表示此页面下的内容操作成功将data返回到上一页面，如果是用back返回过去的则不存在用setResult传递data值
+    RegisterActivity.this.finish();
+*/
+
+
 
     class DownloadData extends AsyncTask<String, Void, Integer> {
 
 
         @Override
         protected Integer doInBackground(String... strings) {
+
+            /*
             feedback = new Feedback();
 
             String response = null;
             OutputStreamWriter request = null;
             int parsingFeedback = feedback.FAIL;
 
-
+*/
             // Variables
             final String BASE_URL = new Config().getRegisterUrl();
             final String NAME = "name";
@@ -146,7 +169,7 @@ public class Register extends AppCompatActivity {
             final String PASSWORD = "password";
             final String PARAMS = NAME + "=" + strings[0] + "&" + EMAIL + "=" + strings[1] + "&" + PASSWORD + "=" + strings[2];
 
-
+/*
             URL url = null;
             HttpURLConnection connection = null;
             try {
@@ -193,13 +216,14 @@ public class Register extends AppCompatActivity {
                 return parsingFeedback;
             }
 
-
+*/
+            return 0;
         }
 
 
         @Override
         protected void onPostExecute(Integer mFeedback) {
-            super.onPostExecute(mFeedback);
+            /*super.onPostExecute(mFeedback);
             if (pDialog.isShowing()) pDialog.dismiss();
             if (mFeedback == feedback.SUCCESS) {
                 Intent intent = new Intent(getApplication(), Login.class);
@@ -210,9 +234,43 @@ public class Register extends AppCompatActivity {
                 btnRegister.setClickable(true);
                 Toast.makeText(getApplication(), feedback.getError_message(), Toast.LENGTH_SHORT).show();
             }
+*/
+
+            Toast.makeText(Register.this, "registration success", Toast.LENGTH_SHORT).show();
+            //把账号、密码和账号标识保存到sp里面
+            /**
+             * 保存账号和密码到SharedPreferences中
+             */
+    saveRegisterInfo(name, password,email);
+    //注册成功后把账号传递到LoginActivity.java中
+    // 返回值到loginActivity显示
+    Intent data = new Intent();
+                    data.putExtra("userName", name);
+    setResult(RESULT_OK, data);
+    //RESULT_OK为Activity系统常量，状态码为-1，
+    // 表示此页面下的内容操作成功将data返回到上一页面，如果是用back返回过去的则不存在用setResult传递data值
+            Intent intent = new Intent(getApplication(), Login.class);
+            //intent.putExtra("feedback", feedback);
+            startActivity(intent);
+    Register.this.finish();
+
 
         }
 
+        private void saveRegisterInfo(String userName,String psw,String email){
+
+            //loginInfo表示文件名, mode_private SharedPreferences sp = getSharedPreferences( );
+            SharedPreferences sp=getSharedPreferences("loginInfo", MODE_PRIVATE);
+            //获取编辑器， SharedPreferences.Editor  editor -> sp.edit();
+            SharedPreferences.Editor editor=sp.edit();
+            //以用户名为key，密码为value保存在SharedPreferences中
+            //key,value,如键值对，editor.putString(用户名，密码）;
+            editor.putString( email,psw);
+            //提交修改 editor.commit();
+            editor.commit();
+            String ts = sp.getString(email , "");
+            Log.d("TAG","testr "+ts);
+        }
         /**
          * Converts the contents of an InputStream to a String.
          */

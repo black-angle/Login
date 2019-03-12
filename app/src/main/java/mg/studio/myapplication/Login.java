@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.content.SharedPreferences;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -99,6 +100,8 @@ public class Login extends AppCompatActivity {
      *  Disable the button while login is processing
      *  @param view from activity_login.xml
      */
+
+
     public void btnLogin(View view) {
 
 
@@ -131,7 +134,15 @@ public class Login extends AppCompatActivity {
         }
     }
 
+    private String readPsw(String userName){
+        //getSharedPreferences("loginInfo",MODE_PRIVATE);
+        //"loginInfo",mode_private; MODE_PRIVATE表示可以继续写入
+        SharedPreferences sp=getSharedPreferences("loginInfo", MODE_PRIVATE);
+        //sp.getString() userName, "";
 
+        Log.d("TAG","testf"+userName+"testf"+sp.getString(userName , ""));
+        return sp.getString(userName , "");
+    }
     /**
      * Press the button register, go to Registration form
      *
@@ -169,6 +180,12 @@ public class Login extends AppCompatActivity {
             final String PARAMS = EMAIL + "=" + strings[0] + "&" + PASSWORD + "=" + strings[1];
             Log.d("TAG","Email and Pass - "+EMAIL + "=" + strings[0] + "&" + PASSWORD + "=" + strings[1]);
 
+            final String spPsw=readPsw(strings[0]);
+            Log.d("TAG","Email and Pass233 - "+spPsw);
+            if(spPsw.equals(strings[1])){
+                parsingFeedback=feedback.SUCCESS;
+            }
+            /*
             URL url = null;
             HttpURLConnection connection = null;
             try {
@@ -213,7 +230,8 @@ public class Login extends AppCompatActivity {
                 Log.d("TAG", "Response " + response);
 
                 return parsingFeedback;
-            }
+            }*/
+            return parsingFeedback;
         }
 
 
@@ -226,6 +244,7 @@ public class Login extends AppCompatActivity {
 
             if (mFeedback == feedback.SUCCESS) {
                 // Update the session
+                Toast.makeText(Login.this, "login success", Toast.LENGTH_SHORT).show();
                 session.setLogin(true);
                 // Move the user to MainActivity and pass in the User name which was form the server
                 Intent intent = new Intent(getApplication(), MainActivity.class);
@@ -234,7 +253,7 @@ public class Login extends AppCompatActivity {
             } else {
                 // Allow the user to click the button
                 loginButton.setClickable(true);
-                Toast.makeText(getApplication(), feedback.getError_message(), Toast.LENGTH_SHORT).show();
+               Toast.makeText(getApplication(), "Wrong email or password", Toast.LENGTH_SHORT).show();
             }
 
         }

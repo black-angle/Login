@@ -3,6 +3,7 @@ package mg.studio.myapplication;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
+import android.content.SharedPreferences;
 
 /**
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
