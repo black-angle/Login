@@ -241,6 +241,7 @@ public class Register extends AppCompatActivity {
             /**
              * 保存账号和密码到SharedPreferences中
              */
+            //
     saveRegisterInfo(name, password,email);
     //注册成功后把账号传递到LoginActivity.java中
     // 返回值到loginActivity显示
